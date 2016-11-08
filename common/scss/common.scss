@@ -3,7 +3,7 @@
 /* =========================================================
  DEFAULT STYLE
 ========================================================= */
-
+@import url(http://fonts.googleapis.com/earlyaccess/notosansjp.css);
 * {
   margin: 0;
   padding: 0;
@@ -20,10 +20,27 @@ html, body {
 body {
   line-height: 1.6;
   font-size: 1.4rem;
-  font-family: $sansSerif;
+  font-family: '游ゴシック', 'Yu Gothic', 'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', 'メイリオ', Meiryo, 'ＭＳ Ｐゴシック',sans-serif;
+  font-weight:500;
   color: $fontColor;
+  background: url(/common/images/main_top.jpg) center top no-repeat;
+}
+.sp {
+  display: none;
+}
+.cf:before,
+.cf:after {
+    content: " ";
+    display: table;
 }
 
+.cf:after {
+    clear: both;
+}
+
+.cf {
+    *zoom: 1;
+}
 @media print {
   body {
     font-size: 1.4rem;
@@ -43,6 +60,90 @@ p {
 ul {
   list-style: none;
 }
+header.sp{
+  display: none;
+}
+header{
+  width: 100%;
+  position: fixed;
+  top: 0;
+  background-color: rgba(255,255,255,1);
+  padding: 8px 0;
+  z-index: 1000;
+  .inner{
+    width: 1000px;
+    margin: 0 auto;
+    #logo{
+      width: 210px;
+      float: left;
+      margin: 0;
+      img{
+        width: 100%;
+        height: auto;
+      }
+    }
+    nav {
+      float: right;
+      margin-top: 15px;
+      li{
+        display: inline-block;
+        margin-left: 20px;
+      }
+    }
+  }
+}
+
+#contents{
+  padding-top: 330px;
+  main{
+    section{
+      h2{
+        margin: 60px 0;
+        font-size: 20px;
+        text-align: center;
+        font-weight: 500;
+        span{
+          display: inline-block;
+          border-bottom: 1px solid #f278ac;
+        }
+      }
+      #banner-list{
+        li{
+          display: inline-block;
+          margin: 0 5px;
+          &.tel{
+            a{
+              pointer-events: none;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+footer{
+  padding-bottom: 330px;
+  background: url(/common/images/footer_bg.jpg) 0 bottom no-repeat;
+  #footer-logo  {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+  #footer-link{
+    text-align: center;
+    margin-bottom: 100px;
+    li{
+      display: inline-block;
+      margin: 0 10px;
+    }
+  }
+  #copy{
+    font-size: 10px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+}
+
 @include linkColor($linkColor);
 
 .fadeAlpha {
@@ -54,12 +155,10 @@ ul {
     opacity: 1;
     transition: opacity .2s ease-in;
   }
+
 }
 
-//このエリアはサンプルです。削除してください
-// .example{
-//   @extend %cf;
-// }
+
 
 /* =========================================================
  CLEARFIX

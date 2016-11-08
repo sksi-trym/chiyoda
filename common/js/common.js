@@ -91,9 +91,20 @@ common scripts
 
     smoothScroll : function(){
 
+      var path = location.pathname;
+
+      if ( path == '/' ) {
+        $('header nav,#footer-link').find('a').each(function() {
+          var href = $(this).attr('href').replace(/\/(\#.*?)/, '$1');
+          $(this).attr('href', href);
+        });
+      }
+
+      headerH = $('header').outerHeight();
+
       $('a[href^="#"]').click(function() {
         $('html,body').animate({ scrollTop:
-          $($(this).attr('href')).offset().top }, 'slow','swing');
+          $($(this).attr('href')).offset().top-headerH }, 'slow','swing');
           return false;
         });
 
@@ -285,8 +296,98 @@ common scripts
         //スマホ OR タブレットの場合
       }
 
-    }
+    },
+    mmenu : function(){
 
+          $header = jQuery('header');
+          var nav = $header.find('nav').html();
+          var logo = $header.find('#logo').html();
+
+          jQuery('body').prepend('\
+            <header class="sp">\
+              <ul>\
+                <li class="menuBtn"><a class="navToggle" href="#nav"><i class="fa fa-bars" aria-hidden="true"></i><i class="fa fa-times" aria-hidden="true"></i></a></li>\
+                <li class="logo">' + logo + '</li>\
+              </ul>\
+              <div id="nav">\
+                <div>\
+                  <ul>' + nav + '</ul>\
+                </div>\
+              </div>\
+            </header>'
+          );
+
+          var $menu = jQuery('#nav');
+
+          $menu.mmenu({
+            slidingSubmenus: false,
+            "extensions": [
+              "pagedim-black"
+            ],
+            offCanvas: {
+              position: "right",
+              zposition: "front"
+            },
+            classNames: {
+              fixedElements: {
+                fixed: "header"
+              }
+            }
+          });
+
+
+          var $mmenu = $menu.data( "mmenu" );
+
+          $mmenu.bind('opened', function () {
+            jQuery(function(){
+              setTimeout(function(){
+                jQuery('a[href="#nav"]').attr('href', '#nav-close');
+              },500);
+            });
+          });
+
+          $mmenu.bind('closed', function () {
+            jQuery(function(){
+              setTimeout(function(){
+                jQuery('a[href="#nav-close"]').attr('href', '#nav');
+              },500);
+            });
+          });
+
+          jQuery(document).on('click', 'a[href="#nav-close"]', function(){
+            $mmenu.close();
+          });
+
+          var $menu = $('#nav'),
+          $html = $('html, body');
+          var API = $menu.data( "mmenu" );
+
+
+          var $anchor = false;
+          $menu.find( 'li > a' ).on(
+            'click',
+            function( e )
+            {
+              $anchor = $(this);
+            }
+          );
+
+          var api = $menu.data( 'mmenu' );
+          api.bind( 'closed',
+            function(){
+              if ( $anchor ){
+                var href = $anchor.attr( 'href' );
+                $anchor = false;
+
+                //  if the clicked link is linked to an anchor, scroll the page to that anchor
+                if ( href.slice( 0, 1 ) == '#' ){
+                  $html.animate({
+                    scrollTop: $( href ).offset().top-60
+                  });
+                }
+              }
+            });
+        }
   }
 
   $(function() {
@@ -301,11 +402,11 @@ common scripts
     Common.altText();
     Common.share();
     Common.uaFnc();
+    Common.mmenu();
 
     $(window).on('load resize', function(){
 
       Common.resizeFnc();
-      Common.bgResize();
 
     });
 
